@@ -16,9 +16,16 @@ export default class NewBill {
     new Logout({ document, localStorage, onNavigate })
   }
   handleChangeFile = e => {
+    document.querySelector(".error-extensionFile").style.display = "none"
     const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
+    // get file extension by split
+    const fileExtension = file.name.split(".").pop()
     const filePath = e.target.value.split(/\\/g)
     const fileName = filePath[filePath.length-1]
+
+    // check if file extension is an image
+    if(['jpg','jpeg','png'].includes(fileExtension)){
+      /* istanbul ignore next */
     this.firestore
       .storage
       .ref(`justificatifs/${fileName}`)
@@ -28,7 +35,10 @@ export default class NewBill {
         this.fileUrl = url
         this.fileName = fileName
       })
-  }
+  } else {
+    document.querySelector(".error-extensionFile").style.display = "block"
+    document.querySelector(`input[data-testid="file"]`).value = null  }
+}
   handleSubmit = e => {
     e.preventDefault()
     const email = JSON.parse(localStorage.getItem("user")).email
