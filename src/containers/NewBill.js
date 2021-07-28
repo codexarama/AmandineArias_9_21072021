@@ -19,7 +19,7 @@ export default class NewBill {
     document.querySelector(".error-extensionFile").style.display = "none"
     const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
     // get file extension by split
-    const fileExtension = file.name.split(".").pop()
+    const fileExtension = fileName.split(".").pop()
     const filePath = e.target.value.split(/\\/g)
     const fileName = filePath[filePath.length-1]
 
