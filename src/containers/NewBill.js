@@ -25,7 +25,6 @@ export default class NewBill {
 
     // check if file extension is an image
     if(['jpg','jpeg','png'].includes(fileExtension)){
-      /* istanbul ignore next */
     this.firestore
       .storage
       .ref(`justificatifs/${fileName}`)
@@ -37,7 +36,8 @@ export default class NewBill {
       })
   } else {
     document.querySelector(".error-extensionFile").style.display = "block"
-    document.querySelector(`input[data-testid="file"]`).value = null  }
+    document.querySelector(`input[data-testid="file"]`).value = ""  }
+    // document.querySelector(`input[data-testid="file"]`).value = null  }
 }
   handleSubmit = e => {
     e.preventDefault()
