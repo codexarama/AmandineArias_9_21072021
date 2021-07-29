@@ -38,37 +38,57 @@ export default class {
   };
 
   // not need to cover this function by tests
-  /* istanbul ignore next */
   getBills = () => {
-    const userEmail = localStorage.getItem('user')
-      ? JSON.parse(localStorage.getItem('user')).email
-      : '';
+    const userEmail = localStorage.getItem("user") ?
+    JSON.parse(localStorage.getItem("user")).email : ""
     if (this.firestore) {
       return this.firestore
         .bills()
         .get()
         .then((snapshot) => {
           const bills = snapshot.docs
-            .map((doc) => {
-              try {
-                return {
-                  ...doc.data(),
-                  date: doc.data().date,
-                  status: formatStatus(doc.data().status),
-                };
-              } catch (e) {
-                return {
-                  ...doc.data(),
-                  date: doc.data().date,
-                  status: formatStatus(doc.data().status),
-                };
-              }
-            })
-            .filter((bill) => bill.email === userEmail);
-          console.log('length', bills.length);
-          return bills;
+          .map((doc) => ({
+            ...doc.data() }))
+            .filter((bill) => bill.email === userEmail)
+            console.log('length', bills.length)
+          return bills
         })
-        .catch((error) => error);
+        .catch(error => error)
     }
-  };
+  }
 }
+
+// ORIGINAL ----------------------------------------------
+//   getBills = () => {
+//     const userEmail = localStorage.getItem('user')
+//       ? JSON.parse(localStorage.getItem('user')).email
+//       : '';
+//     if (this.firestore) {
+//       return this.firestore
+//         .bills()
+//         .get()
+//         .then((snapshot) => {
+//           const bills = snapshot.docs
+//             .map((doc) => {
+//               try {
+//                 return {
+//                   ...doc.data(),
+//                   date: doc.data().date,
+//                   status: formatStatus(doc.data().status),
+//                 };
+//               } catch (e) {
+//                 return {
+//                   ...doc.data(),
+//                   date: doc.data().date,
+//                   status: formatStatus(doc.data().status),
+//                 };
+//               }
+//             })
+//             .filter((bill) => bill.email === userEmail);
+//           console.log('length', bills.length);
+//           return bills;
+//         })
+//         .catch((error) => error);
+//     }
+//   };
+// }

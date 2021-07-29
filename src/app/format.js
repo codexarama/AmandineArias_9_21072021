@@ -1,12 +1,11 @@
 export const formatDate = (dateStr) => {
   const date = new Date(dateStr)
   const ye = new Intl.DateTimeFormat('fr', { year: 'numeric' }).format(date)
-  const mo = new Intl.DateTimeFormat('fr', { month: 'short' }).format(date)
+  // convert string into number for month value (more simple)
+  const mo = new Intl.DateTimeFormat('fr', { month: '2-digit' }).format(date)
   const da = new Intl.DateTimeFormat('fr', { day: '2-digit' }).format(date)
-  const month = mo.charAt(0).toUpperCase() + mo.slice(1)
-  // return `${parseInt(da)} ${month.substr(0,3)}. ${ye.toString().substr(2,4)}` // original
-  return `${parseInt(da)} ${month.substr(0,3)}. ${ye.toString().substr(2,3)}` // ne fonctionne pas
-  // return `${parseInt(da)} ${month.substr(0,3)}. ${parseInt(ye)}` // ne fonctionne pas
+  // display right french date format
+  return `${(da)}.${mo}.${ye.toString().substr(2,4)}`
 }
 
 export const formatStatus = (status) => {
@@ -16,7 +15,7 @@ export const formatStatus = (status) => {
     case "accepted":
       return "Accepté"
     case "refused":
+      // in french like others
       return "Refusé"
-      // return "Refused" // ORIGINAL
   }
 }
