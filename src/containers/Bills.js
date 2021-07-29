@@ -30,7 +30,7 @@ export default class {
     $('#modaleFile')
       .find('.modal-body')
       .html(
-        `<div style='text-align: center;'><img max-width='100%' src=${billUrl} /></div>`
+        `<div style='text-align: center;'><img width='100%' max-height='fit-content' src=${billUrl} /></div>`
       );
     $('#modaleFile').modal('show');
   };
