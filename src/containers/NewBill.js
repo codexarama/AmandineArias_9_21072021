@@ -19,9 +19,9 @@ export default class NewBill {
     document.querySelector(".error-extensionFile").style.display = "none"
     const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
     // get file extension by split
-    const fileExtension = fileName.split(".").pop()
     const filePath = e.target.value.split(/\\/g)
     const fileName = filePath[filePath.length-1]
+    const fileExtension = fileName.split(".").pop()
 
     // check if file extension is an image
     if(['jpg','jpeg','png'].includes(fileExtension)){
@@ -33,11 +33,13 @@ export default class NewBill {
       .then(url => {
         this.fileUrl = url
         this.fileName = fileName
+        console.log('coucou1');
       })
   } else {
+    console.log('coucou2');
     document.querySelector(".error-extensionFile").style.display = "block"
-    document.querySelector(`input[data-testid="file"]`).value = ""  }
-    // document.querySelector(`input[data-testid="file"]`).value = null  }
+    // document.querySelector(`input[data-testid="file"]`).value = ""  }
+    document.querySelector(`input[data-testid="file"]`).value = null  }
 }
   handleSubmit = e => {
     e.preventDefault()
