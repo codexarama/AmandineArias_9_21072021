@@ -88,7 +88,7 @@ export default class {
     $('#modaleFileAdmin1')
       .find('.modal-body')
       .html(
-        `<div style='text-align: center;'><img width='auto' src=${billUrl} /></div>`
+        `<div style='text-align: center;'><img max-width='100%' src=${billUrl} /></div>`
       );
     if (typeof $('#modaleFileAdmin1').modal === 'function')
       $('#modaleFileAdmin1').modal('show');
