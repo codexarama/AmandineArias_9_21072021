@@ -154,14 +154,49 @@ export default class {
       this.counter++;
     }
 
-    bills.forEach((bill) => {
+    // // ORIGINAL--------------------------
+    //   bills.forEach((bill) => {
+    //     $(`#open-bill${bill.id}`).click((e) =>
+    //       this.handleEditTicket(e, bill, bills)
+    //     );
+    //   });
+
+    //   return bills;
+    // }
+    // // -----------------------------------
+
+    //   // TEST 1 -------------------------
+    //   bills.forEach((bill) => {
+    //     $(`#status-bills-container${index} #open-bill${bill.id}`).click((e) =>
+    //       // $(`#status-bills-container${this.index} #open-bill${bill.id}`).click((e) =>
+    //       this.handleEditTicket(e, bill, bills)
+    //     );
+    //   });
+
+    //   return bills;
+    // }
+
+    // TEST 2 -------------------------
+    filteredBills(bills, getStatus(this.index)).forEach((bill) => {
       $(`#open-bill${bill.id}`).click((e) =>
         this.handleEditTicket(e, bill, bills)
       );
     });
-
     return bills;
   }
+  // --------------------------------------------------
+
+  // ERROR MSG
+  // format.js:3 Uncaught RangeError: Invalid time value
+  // at formatDate (format.js:3)
+  // at card (Dashboard.js:51)
+  // at Dashboard.js:59
+  // at Array.map (<anonymous>)
+  // at cards (Dashboard.js:59)
+  // at default.handleShowTickets (Dashboard.js:148)
+  // at HTMLSpanElement.<anonymous> (Dashboard.js:79)
+  // at HTMLSpanElement.dispatch (jquery-3.2.1.slim.min.js:3)
+  // at HTMLSpanElement.q.handle (jquery-3.2.1.slim.min.js:3)
 
   getBillsAllUsers = () => {
     if (this.firestore) {
