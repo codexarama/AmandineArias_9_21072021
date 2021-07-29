@@ -1,7 +1,5 @@
 import { ROUTES_PATH } from '../constants/routes.js';
 import { formatDate, formatStatus } from '../app/format.js';
-// formatDate non reconnu
-// où est le bug ?! const ok dans ../app/format.js
 import Logout from './Logout.js';
 
 export default class {
@@ -57,38 +55,3 @@ export default class {
     }
   }
 }
-
-// ORIGINAL ----------------------------------------------
-//   getBills = () => {
-//     const userEmail = localStorage.getItem('user')
-//       ? JSON.parse(localStorage.getItem('user')).email
-//       : '';
-//     if (this.firestore) {
-//       return this.firestore
-//         .bills()
-//         .get()
-//         .then((snapshot) => {
-//           const bills = snapshot.docs
-//             .map((doc) => {
-//               try {
-//                 return {
-//                   ...doc.data(),
-//                   date: doc.data().date,
-//                   status: formatStatus(doc.data().status),
-//                 };
-//               } catch (e) {
-//                 return {
-//                   ...doc.data(),
-//                   date: doc.data().date,
-//                   status: formatStatus(doc.data().status),
-//                 };
-//               }
-//             })
-//             .filter((bill) => bill.email === userEmail);
-//           console.log('length', bills.length);
-//           return bills;
-//         })
-//         .catch((error) => error);
-//     }
-//   };
-// }
