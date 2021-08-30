@@ -33,10 +33,8 @@ export default class NewBill {
       .then(url => {
         this.fileUrl = url
         this.fileName = fileName
-        console.log('coucou1');
       })
   } else {
-    console.log('coucou2');
     document.querySelector(".error-extensionFile").style.display = "block"
     // document.querySelector(`input[data-testid="file"]`).value = ""  }
     document.querySelector(`input[data-testid="file"]`).value = null  }
