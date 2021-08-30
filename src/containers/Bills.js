@@ -7,26 +7,36 @@ export default class {
     this.document = document;
     this.onNavigate = onNavigate;
     this.firestore = firestore;
+
     const buttonNewBill = document.querySelector(
       `button[data-testid="btn-new-bill"]`
     );
+
+    // FAIRE LE SPY
     if (buttonNewBill)
       buttonNewBill.addEventListener('click', this.handleClickNewBill);
+
     const iconEye = document.querySelectorAll(`div[data-testid="icon-eye"]`);
-    if (iconEye)
-      iconEye.forEach((icon) => {
-        icon.addEventListener('click', (e) => this.handleClickIconEye(icon));
-      });
+    // FAIRE LE SPY
+    // condition toujours vraie
+    // if (iconEye)
+    // fix : si la liste des nouvelles notes de frais n'est pas vide, alors...
+    if (iconEye.length !== 0)
+    iconEye.forEach((icon) => {
+      icon.addEventListener('click', (e) => this.handleClickIconEye(icon));
+    });
     new Logout({ document, localStorage, onNavigate });
   }
 
+  // Tester l'événement du bouton qui créer une nouvelle note
   handleClickNewBill = (e) => {
     this.onNavigate(ROUTES_PATH['NewBill']);
   };
 
+  // Tester l'événement de l'icone qui, au click, permet la visualisation de l'img
   handleClickIconEye = (icon) => {
     const billUrl = icon.getAttribute('data-bill-url');
-    // modified img width
+    // fix : img width
     const imgWidth = Math.floor($('#modaleFile').width() * 0.5);
     $('#modaleFile')
       .find('.modal-body')
@@ -50,8 +60,8 @@ export default class {
           const bills = snapshot.docs
             .map((doc) => ({
               ...doc.data(),
-              date: formatDate(doc.data().date),
-              status: formatStatus(doc.data().status),
+              // date: formatDate(doc.data().date),
+              // status: formatStatus(doc.data().status),
             }))
             .filter((bill) => bill.email === userEmail);
           console.log('length', bills.length);
