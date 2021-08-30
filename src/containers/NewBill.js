@@ -59,6 +59,8 @@ export default class NewBill {
     this.onNavigate(ROUTES_PATH['Bills'])
   }
 
+  // no need to cover this function by tests
+  /* istanbul ignore next */
   createBill = (bill) => {
     if (this.firestore) {
       this.firestore
