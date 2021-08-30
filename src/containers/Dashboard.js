@@ -85,7 +85,7 @@ export default class {
   handleClickIconEye = () => {
     const billUrl = $('#icon-eye-d').attr('data-bill-url');
     // modify img width
-    const imgWidth = Math.floor($('#modaleFileAdmin1').width() * 0.8)
+    const imgWidth = Math.floor($('#modaleFileAdmin1').width() * 0.8);
     $('#modaleFileAdmin1')
       .find('.modal-body')
       .html(
@@ -95,6 +95,35 @@ export default class {
       $('#modaleFileAdmin1').modal('show');
   };
 
+    /*
+  handleEditTicket(e, bill, bills) {
+    if (this.counter === undefined || this.id !== bill.id) this.counter = 0
+    if (this.id === undefined || this.id !== bill.id) this.id = bill.id
+
+    if (this.counter % 2 === 0) {
+      bills.forEach(b => {
+        $(`#open-bill${b.id}`).css({ background: '#0D5AE5' })
+      })
+      $(`#open-bill${bill.id}`).css({ background: '#2A2B35' })
+      $('.dashboard-right-container div').html(DashboardFormUI(bill))
+      $('.vertical-navbar').css({ height: '150vh' })
+      this.counter ++
+    } else {
+      $(`#open-bill${bill.id}`).css({ background: '#0D5AE5' })
+
+      $('.dashboard-right-container div').html(`
+        <div id="big-billed-icon"> ${BigBilledIcon} </div>`)
+      $('.vertical-navbar').css({ height: '120vh' })
+      this.counter ++
+    }
+
+    $('#icon-eye-d').click(this.handleClickIconEye)
+    $('#btn-accept-bill').click((e) => this.handleAcceptSubmit(e, bill))
+    $('#btn-refuse-bill').click((e) => this.handleRefuseSubmit(e, bill))
+  }
+  */
+
+  // fix : Bug Hunt
   handleEditTicket(e, bill, bills) {
     this.id = bill.id;
     bills.forEach((b) => {
@@ -144,50 +173,19 @@ export default class {
       this.counter++;
     }
 
-    // // ORIGINAL--------------------------
-    //   bills.forEach((bill) => {
-    //     $(`#open-bill${bill.id}`).click((e) =>
-    //       this.handleEditTicket(e, bill, bills)
-    //     );
-    //   });
-
-    //   return bills;
-    // }
-    // // -----------------------------------
-
-    //   // TEST 1 -------------------------
-    //   bills.forEach((bill) => {
-    //     $(`#status-bills-container${index} #open-bill${bill.id}`).click((e) =>
-    //       // $(`#status-bills-container${this.index} #open-bill${bill.id}`).click((e) =>
-    //       this.handleEditTicket(e, bill, bills)
-    //     );
-    //   });
-
-    //   return bills;
-    // }
-
-    // TEST 2 -------------------------
-    filteredBills(bills, getStatus(this.index)).forEach((bill) => {
-      $(`#open-bill${bill.id}`).click((e) =>
+    // fix : open tickets in the list (wrong query selector modified)
+    bills.forEach((bill) => {
+      // $(`#open-bill${bill.id}`).click((e) =>
+      $(`#status-bills-container${index} #open-bill${bill.id}`).click((e) =>
         this.handleEditTicket(e, bill, bills)
       );
     });
+
     return bills;
   }
-  // --------------------------------------------------
 
-  // ERROR MSG
-  // format.js:3 Uncaught RangeError: Invalid time value
-  // at formatDate (format.js:3)
-  // at card (Dashboard.js:51)
-  // at Dashboard.js:59
-  // at Array.map (<anonymous>)
-  // at cards (Dashboard.js:59)
-  // at default.handleShowTickets (Dashboard.js:148)
-  // at HTMLSpanElement.<anonymous> (Dashboard.js:79)
-  // at HTMLSpanElement.dispatch (jquery-3.2.1.slim.min.js:3)
-  // at HTMLSpanElement.q.handle (jquery-3.2.1.slim.min.js:3)
-
+  // no need to cover this function by tests
+  /* istanbul ignore next */
   getBillsAllUsers = () => {
     if (this.firestore) {
       return this.firestore
@@ -206,6 +204,8 @@ export default class {
     }
   };
 
+  // not need to cover this function by tests
+  /* istanbul ignore next */
   updateBill = (bill) => {
     if (this.firestore) {
       return this.firestore
