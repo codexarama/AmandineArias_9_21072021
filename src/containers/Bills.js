@@ -28,12 +28,10 @@ export default class {
     new Logout({ document, localStorage, onNavigate });
   }
 
-  // Tester l'événement du bouton qui créer une nouvelle note
   handleClickNewBill = (e) => {
     this.onNavigate(ROUTES_PATH['NewBill']);
   };
 
-  // Tester l'événement de l'icone qui, au click, permet la visualisation de l'img
   handleClickIconEye = (icon) => {
     const billUrl = icon.getAttribute('data-bill-url');
     // fix : img width
