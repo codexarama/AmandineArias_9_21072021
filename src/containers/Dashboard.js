@@ -175,7 +175,7 @@ export default class {
 
     // fix : open tickets in the list (wrong query selector modified)
     bills.forEach((bill) => {
-      // $(`#open-bill${bill.id}`).click((e) =>
+      // $(`#open-bill${bill.id}`).click((e) => // ORIGINAL
       $(`#status-bills-container${index} #open-bill${bill.id}`).click((e) =>
         this.handleEditTicket(e, bill, bills)
       );
