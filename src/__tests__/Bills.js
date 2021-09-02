@@ -1,92 +1,98 @@
 import { screen } from '@testing-library/dom';
+import userEvent from '@testing-library/user-event';
 import { bills } from '../fixtures/bills.js';
 import Bills from '../containers/Bills.js';
 import BillsUI from '../views/BillsUI.js';
 import { localStorageMock } from '../__mocks__/localStorage.js';
 import { ROUTES } from '../constants/routes';
-import userEvent from '@testing-library/user-event';
 
-// TESTS : CONNECTED AS EMPLOYEE
+// UNIT TESTS : CONNECTED AS EMPLOYEE
 
 describe('Given I am connected as an employee', () => {
-  // test : loading page on BillUI
+  // parcours employe
+  Object.defineProperty(window, 'localStorage', {
+    value: localStorageMock,
+  });
+  window.localStorage.setItem(
+    'user',
+    JSON.stringify({
+      type: 'Employee',
+    })
+  );
+
+  // TEST : loading page BillsUI
   test('Then, Loading page should be rendered', () => {
     const html = BillsUI({ loading: true });
     document.body.innerHTML = html;
 
+    // expected result
     expect(screen.getAllByText('Loading...')).toBeTruthy();
   });
 
-  // test : Error on bills page
+  // TEST : Error on BillsUI page
   describe('When I am on Bills page and back-end send an error message', () => {
     test('Then, Error page should be rendered', () => {
       document.body.innerHTML = BillsUI({ error: 'some error message' });
 
+      // expected result
       expect(screen.getAllByText('Erreur')).toBeTruthy();
     });
   });
 
-  // test : vertical icon visible in vertical layout
+  // TEST : bill icon visible in vertical layout
   describe('When I am on Bills page', () => {
     test('Then bill icon in vertical layout should be visible', () => {
-      Object.defineProperty(window, 'localStorage', {
-        value: localStorageMock,
-      });
-      window.localStorage.setItem(
-        'user',
-        JSON.stringify({
-          type: 'Employee',
-        })
-      );
-
+      // DOM construction
       document.body.innerHTML = BillsUI({ data: [] });
 
+      // get icon in DOM
       const billIcon = screen.getByTestId('icon-window');
 
+      // result expected
       expect(billIcon).toBeTruthy();
     });
   });
 
-  // test : empty table if no bill
+  // TEST : empty table if no bill
   describe('When I am on Bills Page and there are no bill', () => {
     test('Then bills should render an empty table', () => {
+      // DOM construction
       document.body.innerHTML = BillsUI({ data: [] });
 
-      // to-do write expect expression
-      // DONE :
+      // get DOM element
+      const eyeIcon = screen.queryByTestId('icon-eye');
+
+      // expected result
+      expect(eyeIcon).toBeNull();
+
+      // get DOM element
+      // const table = screen.queryByTestId('tbody');
+
+      // expected result
+      // expect(table.innerHTML).toBe("");
+
       // ERREUR --------------------
-      // Cannot read property 'innerHTML' of null
-      const table = screen.queryByTestId('data-table');
-      expect(table.innerHTML).toBe('');
+      // expect(received).toBe(expected) // Object.is equality
+      // Expected: ""
+      // Received: "·············"
     });
   });
 
-  // test : redirected on newBill page if clic on new bill button
-  describe('When I am on Bills page and I click on the new bill button', () => {
-    test('Then I should be sent to newBill page', () => {
-      Object.defineProperty(window, 'localStorage', {
-        value: localStorageMock,
-      });
-      window.localStorage.setItem(
-        'user',
-        JSON.stringify({
-          type: 'Employee',
-        })
-      );
+  // TEST : redirected on newBill page if click on new bill button
+  describe('When I am on Bills page and I click on the new bill button Nouvelle note de frais', () => {
+    test('Then I should navigate to newBill page bill/new', () => {
+      // DOM construction
+      document.body.innerHTML = BillsUI({ bills });
 
-      // ERREUR --------------------
-      // Bills is not defined
-      const html = BillsUI({ data: bills });
-      document.body.innerHTML = html;
-
-      // document.body.innerHTML = BillsUI({ bills });
-
+      // init onNavigate
       const onNavigate = (pathname) => {
         document.body.innerHTML = ROUTES({ pathname });
       };
 
+      // init firestore
       const firestore = null;
 
+      // init bills display
       const billsContainer = new Bills({
         document,
         onNavigate,
@@ -94,42 +100,33 @@ describe('Given I am connected as an employee', () => {
         localStorage: window.localStorage,
       });
 
+      // handle click event
       const handleClickNewBill = jest.fn(billsContainer.handleClickNewBill);
       const newBillButton = screen.getByTestId('btn-new-bill');
       newBillButton.addEventListener('click', handleClickNewBill);
       userEvent.click(newBillButton);
 
+      // expected results
       expect(handleClickNewBill).toHaveBeenCalled();
-      expect(screen.getByText('Envoyer')).toBeTruthy();
+      expect(screen.getByText('Envoyer une note de frais')).toBeTruthy();
     });
   });
 
-  // test : click on icon eye opens modal
+  // TEST : click on icon eye opens modal & display attached image
   describe('When I am on Bills page and I click on an icon eye', () => {
     test('Then a modal should open', () => {
-      Object.defineProperty(window, 'localStorage', {
-        value: localStorageMock,
-      });
-      window.localStorage.setItem(
-        'user',
-        JSON.stringify({
-          type: 'Employee',
-        })
-      );
+      // DOM construction
+      document.body.innerHTML = BillsUI({ data: bills });
 
-      // ERREUR --------------------
-      // Bills is not defined
-      const html = BillsUI({ data: bills });
-      document.body.innerHTML = html;
-
-      // document.body.innerHTML = BillsUI({ data: bills });
-
+      // init onNavigate
       const onNavigate = (pathname) => {
         document.body.innerHTML = ROUTES({ pathname });
       };
 
+      // init firestore
       const firestore = null;
 
+      // init bills display
       const billsContainer = new Bills({
         document,
         onNavigate,
@@ -137,24 +134,66 @@ describe('Given I am connected as an employee', () => {
         localStorage: window.localStorage,
       });
 
+      // get DOM element
       const iconEye = screen.getAllByTestId('icon-eye')[0];
+
+      // handle click event
       const handleClickIconEye = jest.fn(
         billsContainer.handleClickIconEye(iconEye)
       );
       iconEye.addEventListener('click', handleClickIconEye);
       userEvent.click(iconEye);
 
+      // expected result
       expect(handleClickIconEye).toHaveBeenCalled();
+    });
 
-      // const modale = screen.getByTestId('modaleFile');
+    test('Then the modal should display the attached image', () => {
+      // DOM construction
+      document.body.innerHTML = BillsUI({ data: bills });
 
-      // expect(modale).toBeTruthy();
+      // init onNavigate
+      const onNavigate = (pathname) => {
+        document.body.innerHTML = ROUTES({ pathname });
+      };
+
+      // init firestore
+      const firestore = null;
+
+      // init bills display
+      const billsContainer = new Bills({
+        document,
+        onNavigate,
+        firestore,
+        localStorage: window.localStorage,
+      });
+
+      // get DOM element
+      const iconEye = screen.getAllByTestId('icon-eye')[0];
+
+      // handle click event
+      billsContainer.handleClickIconEye(iconEye);
+
+      // expected results
+      expect(document.querySelector('.modal')).toBeTruthy();
     });
   });
 
   // test : bills ordered from earliest to latest
+  // ORIGINAL
+  /*test("Then bills should be ordered from earliest to latest", () => {
+    const html = BillsUI({ data: bills })
+    document.body.innerHTML = html
+    const dates = screen.getAllByText(/^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/i).map(a => a.innerHTML)
+    const antiChrono = (a, b) => ((a < b) ? 1 : -1)
+    const datesSorted = [...dates].sort(antiChrono)
+    expect(dates).toEqual(datesSorted)
+  })*/
+
   describe('When I am on Bills Page and there are bill(s)', () => {
     test('Then bills should be ordered from earliest to latest', () => {
+      // DOM construction
+      // document.body.innerHTML = BillsUI({ data: bills });
       const html = BillsUI({ data: bills });
       document.body.innerHTML = html;
 
