@@ -4,8 +4,8 @@ import { bills } from '../fixtures/bills.js';
 import Bills from '../containers/Bills.js';
 import BillsUI from '../views/BillsUI.js';
 import { localStorageMock } from '../__mocks__/localStorage.js';
+import firebase from '../__mocks__/firebase';
 import { ROUTES } from '../constants/routes';
-import firebase from "../__mocks__/firebase";
 
 // UNIT TESTS : CONNECTED AS EMPLOYEE
 
@@ -14,6 +14,7 @@ describe('Given I am connected as an employee', () => {
   Object.defineProperty(window, 'localStorage', {
     value: localStorageMock,
   });
+
   window.localStorage.setItem(
     'user',
     JSON.stringify({
@@ -23,8 +24,8 @@ describe('Given I am connected as an employee', () => {
 
   // TEST : loading page BillsUI
   test('Then, Loading page should be rendered', () => {
-    const html = BillsUI({ loading: true });
-    document.body.innerHTML = html;
+    // DOM construction
+    document.body.innerHTML = BillsUI({ loading: true });
 
     // expected result
     expect(screen.getAllByText('Loading...')).toBeTruthy();
@@ -33,6 +34,7 @@ describe('Given I am connected as an employee', () => {
   // TEST : Error on BillsUI page
   describe('When I am on Bills page and back-end send an error message', () => {
     test('Then, Error page should be rendered', () => {
+      // DOM construction
       document.body.innerHTML = BillsUI({ error: 'some error message' });
 
       // expected result
@@ -46,10 +48,10 @@ describe('Given I am connected as an employee', () => {
       // DOM construction
       document.body.innerHTML = BillsUI({ data: [] });
 
-      // get icon in DOM
+      // get DOM element
       const billIcon = screen.getByTestId('icon-window');
 
-      // result expected
+      // expected result
       expect(billIcon).toBeTruthy();
     });
   });
@@ -90,7 +92,7 @@ describe('Given I am connected as an employee', () => {
         document.body.innerHTML = ROUTES({ pathname });
       };
 
-      // init firestore
+      // firestore status
       const firestore = null;
 
       // init bills display
@@ -124,7 +126,7 @@ describe('Given I am connected as an employee', () => {
         document.body.innerHTML = ROUTES({ pathname });
       };
 
-      // init firestore
+      // firestore status
       const firestore = null;
 
       // init bills display
@@ -158,7 +160,7 @@ describe('Given I am connected as an employee', () => {
         document.body.innerHTML = ROUTES({ pathname });
       };
 
-      // init firestore
+      // firestore status
       const firestore = null;
 
       // init bills display
@@ -193,7 +195,7 @@ describe('Given I am connected as an employee', () => {
 
   describe('When I am on Bills Page and there are bill(s)', () => {
     test('Then bills should be ordered from earliest to latest', () => {
-      // DOM element
+      // DOM construction
       document.body.innerHTML = BillsUI({ data: bills });
 
       // frecnh months array
@@ -259,7 +261,7 @@ describe('Given I am connected as an employee', () => {
           Promise.reject(new Error('Erreur 404'))
         );
 
-        // DOM element
+        // DOM construction
         document.body.innerHTML = BillsUI({ error: 'Erreur 404' });
 
         // await response
@@ -276,7 +278,7 @@ describe('Given I am connected as an employee', () => {
           Promise.reject(new Error('Erreur 500'))
         );
 
-        // DOM element
+        // DOM construction
         document.body.innerHTML = BillsUI({ error: 'Erreur 500' });
         const message = await screen.getByText(/Erreur 500/);
 
