@@ -9,6 +9,11 @@ import { ROUTES } from '../constants/routes';
 
 // UNIT TESTS : CONNECTED AS EMPLOYEE
 
+// init onNavigate
+const onNavigate = (pathname) => {
+  document.body.innerHTML = ROUTES({ pathname });
+};
+
 describe('Given I am connected as an employee', () => {
   // parcours employe
   Object.defineProperty(window, 'localStorage', {
@@ -87,19 +92,11 @@ describe('Given I am connected as an employee', () => {
       // DOM construction
       document.body.innerHTML = BillsUI({ bills });
 
-      // init onNavigate
-      const onNavigate = (pathname) => {
-        document.body.innerHTML = ROUTES({ pathname });
-      };
-
-      // firestore status
-      const firestore = null;
-
       // init bills display
       const billsContainer = new Bills({
         document,
         onNavigate,
-        firestore,
+        firestore: null,
         localStorage: window.localStorage,
       });
 
@@ -121,19 +118,11 @@ describe('Given I am connected as an employee', () => {
       // DOM construction
       document.body.innerHTML = BillsUI({ data: bills });
 
-      // init onNavigate
-      const onNavigate = (pathname) => {
-        document.body.innerHTML = ROUTES({ pathname });
-      };
-
-      // firestore status
-      const firestore = null;
-
       // init bills display
       const billsContainer = new Bills({
         document,
         onNavigate,
-        firestore,
+        firestore: null,
         localStorage: window.localStorage,
       });
 
@@ -155,19 +144,11 @@ describe('Given I am connected as an employee', () => {
       // DOM construction
       document.body.innerHTML = BillsUI({ data: bills });
 
-      // init onNavigate
-      const onNavigate = (pathname) => {
-        document.body.innerHTML = ROUTES({ pathname });
-      };
-
-      // firestore status
-      const firestore = null;
-
       // init bills display
       const billsContainer = new Bills({
         document,
         onNavigate,
-        firestore,
+        firestore: null,
         localStorage: window.localStorage,
       });
 
@@ -198,7 +179,7 @@ describe('Given I am connected as an employee', () => {
       // DOM construction
       document.body.innerHTML = BillsUI({ data: bills });
 
-      // frecnh months array
+      // french months array
       const frenchMonths = [];
       for (let i = 0; i < 12; i++) {
         frenchMonths.push(
@@ -280,6 +261,8 @@ describe('Given I am connected as an employee', () => {
 
         // DOM construction
         document.body.innerHTML = BillsUI({ error: 'Erreur 500' });
+
+        // await for response
         const message = await screen.getByText(/Erreur 500/);
 
         // expected result

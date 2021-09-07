@@ -42,8 +42,8 @@ export default class {
         `<div style='text-align: center;'><img width=${imgWidth} src=${billUrl} /></div>`
       );
 
-    // no need to cover this function by tests
-    /* istanbul ignore next*/
+    // // no need to cover this function by tests
+    // /* istanbul ignore next*/
     if (typeof $('#modaleFile').modal === 'function')
       $('#modaleFile').modal('show');
   };
@@ -62,14 +62,15 @@ export default class {
           const bills = snapshot.docs
             .map((doc) => ({
               ...doc.data(),
-              date: formatDate(doc.data().date),
-              status: formatStatus(doc.data().status),
+              // date: formatDate(doc.data().date),
+              // status: formatStatus(doc.data().status),
             }))
             .filter((bill) => bill.email === userEmail);
           console.log('length', bills.length);
           return bills;
         })
-        .catch((error) => error);
+        // .catch((error) => error);
+        .catch((error) => Promise.reject(Error(error)));
     }
   };
 }
