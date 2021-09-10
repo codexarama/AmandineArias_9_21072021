@@ -15,12 +15,13 @@ export default class NewBill {
     this.fileName = null
     new Logout({ document, localStorage, onNavigate })
   }
+
   handleChangeFile = e => {
     document.querySelector(".error-extensionFile").style.display = "none"
     const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
-    // get file extension by split
     const filePath = e.target.value.split(/\\/g)
     const fileName = filePath[filePath.length-1]
+    // get file extension
     const fileExtension = fileName.split(".").pop()
 
     // check if file extension is an image
@@ -35,8 +36,8 @@ export default class NewBill {
         this.fileName = fileName
       })
   } else {
+    // show error-message
     document.querySelector(".error-extensionFile").style.display = "block"
-    // document.querySelector(`input[data-testid="file"]`).value = ""  }
     document.querySelector(`input[data-testid="file"]`).value = null  }
 }
   handleSubmit = e => {
