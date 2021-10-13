@@ -1,6 +1,6 @@
 # Billed
 
-(Projet fictif de formation n°06/12 avec OpenClassrooms)
+(Projet fictif de formation n°06/11 avec OpenClassrooms)
 
 ## PROBLEMATIQUE
 
