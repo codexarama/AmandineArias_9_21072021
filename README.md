@@ -2,6 +2,14 @@
 
     Projet fictif de formation n°06/11 | OpenClassrooms
 
+**Landing page**
+
+<kbd>![landing page](./Billed.png)</kbd>
+
+**Rapport du test de couverture obtenue**
+
+<kbd>![landing page](./rapports%20tests%20%2B%20couverture/billed_rapports_tests%2Bcouverture.png)</kbd>
+
 > PROBLEMATIQUE
 
 L'application web comporte des erreurs (majeures et mineures) sur le parcours employé qui doivent être analysées et déboguées.
